@@ -1,5 +1,5 @@
 ### Récupérer tous les quizzes
-GET http://127.0.0.1:8000/api/quizzes/
+http://127.0.0.1:8000/api/quizzes/?categorie=3
 Accept: application/json
 
 ### Récupérer un quiz par ID
@@ -37,3 +37,55 @@ DELETE http://127.0.0.1:8000/api/quizzes/1/
 
 ### Supprimer un quiz
 GET http://127.0.0.1:8000/api/categories-count/
+
+
+### Supprimer un quiz
+
+POST http://127.0.0.1:8000/api/verifier-reponse/
+Content-Type: application/json
+Authorization: Token <>
+
+
+### Supprimer un quiz
+POST http://127.0.0.1:8000/api/register/
+Content-Type: application/json
+
+{
+  "username": "11TT11",
+  "email": "111@gmail.com",
+  "password": "1111111@"
+}
+
+### 
+
+# 1️⃣ Login utilisateur pour obtenir le token
+POST http://127.0.0.1:8000/api/login/
+Content-Type: application/json
+
+{
+  "username": "nesibe2",
+  "password": "491200@"
+}
+
+### 
+
+# 2️⃣ Vérifier une réponse de quiz (authentifié)
+POST http://127.0.0.1:8000/api/verifierreponse/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY0ODkzNTEyLCJpYXQiOjE3NjQ4OTE3MTIsImp0aSI6ImEzNzllMzA3OWRiZDRkNWU4YWE0NjQyMjQ0MzZjODhiIiwidXNlcl9pZCI6IjkifQ.1MLlZRtLWiT1sukXBIlZs6g4SUAfTh9IYDM3KhIAoDQ
+
+{
+  "reponse_id": 8
+}
+
+###
+
+# 3️⃣ Récupérer toutes les catégories (authentifié)
+GET http://127.0.0.1:8000/api/categories/
+Authorization: Token <INSÉRER_ICI_VOTRE_TOKEN>
+
+###
+
+# 4️⃣ Récupérer les quizzes d’une catégorie (authentifié)
+GET http://127.0.0.1:8000/api/categories/1/quizzes/
+Authorization: Token <INSÉRER_ICI_VOTRE_TOKEN>

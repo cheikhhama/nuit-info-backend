@@ -126,3 +126,6 @@ class CategorieWithQuizCountSerializer(serializers.ModelSerializer):
         model = Categorie
         fields = ['id', 'nom', 'quiz_count']
 
+
+class ReponseCheckSerializer(serializers.Serializer):
+    reponse_id = serializers.IntegerField()

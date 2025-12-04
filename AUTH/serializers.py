@@ -93,3 +93,36 @@ class LogoutSerializer(serializers.Serializer):
 
         except TokenError:
             raise serializers.ValidationError({"refresh": "Invalid or expired refresh token"})
+        
+from rest_framework import serializers
+from .models import Quiz, Reponse
+
+
+class ReponseSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    label = serializers.CharField(source='texte')
+    isCorrect = serializers.BooleanField(source='est_correct')
+
+    class Meta:
+        model = Reponse
+        fields = ('id', 'label', 'isCorrect')
+
+class QuizSerializer(serializers.ModelSerializer):
+    options = ReponseSerializer(source='reponses', many=True)
+    categorie = serializers.CharField(source='categorie.nom')
+
+    class Meta:
+        model = Quiz
+        fields = ('id', 'titre', 'contenu', 'categorie', 'options')
+
+
+from rest_framework import serializers
+from .models import Categorie
+
+class CategorieWithQuizCountSerializer(serializers.ModelSerializer):
+    quiz_count = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Categorie
+        fields = ['id', 'nom', 'quiz_count']
+

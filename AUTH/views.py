@@ -78,46 +78,39 @@ class LogoutView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        
-# ---------------------------
-# Update Score View
-# ---------------------------
-class UpdateScoreView(APIView):
-    permission_classes = [IsAuthenticated]
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Quiz
+from .serializers import QuizSerializer
 
-    def post(self, request):
+
+class QuizListAPIView(APIView):
+    def get(self, request):
+        quizzes = Quiz.objects.all()
+        serializer = QuizSerializer(quizzes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class QuizDetailAPIView(APIView):
+    def get(self, request, pk):
         try:
-            profile = request.user.profile
-            new_score = request.data.get("score")
+            quiz = Quiz.objects.get(pk=pk)
+        except Quiz.DoesNotExist:
+            return Response({"error": "Quiz not found"}, status=status.HTTP_404_NOT_FOUND)
 
-            if new_score is None:
-                return Response(
-                    {"error": "Score is required"},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+        serializer = QuizSerializer(quiz)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+   
 
-            # تأكد أن score رقم وليس نص
-            try:
-                new_score = int(new_score)
-            except:
-                return Response(
-                    {"error": "Score must be a number"},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+from rest_framework import generics
+from django.db.models import Count
+from .models import Categorie
+from .serializers import CategorieWithQuizCountSerializer
 
-            profile.score = new_score
-            profile.save()
+class CategorieWithQuizCountListAPIView(generics.ListAPIView):
+    serializer_class = CategorieWithQuizCountSerializer
 
-            return Response(
-                {
-                    "message": "Score updated successfully",
-                    "score": profile.score
-                },
-                status=status.HTTP_200_OK
-            )
-
-        except Exception as e:
-            return Response(
-                {"error": "Score update failed", "details": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+    def get_queryset(self):
+        # Annoter chaque catégorie avec le nombre de quizzes
+        return Categorie.objects.annotate(quiz_count=Count('quizzes'))

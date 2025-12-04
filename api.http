@@ -1,0 +1,39 @@
+### Récupérer tous les quizzes
+GET http://127.0.0.1:8000/api/quizzes/
+Accept: application/json
+
+### Récupérer un quiz par ID
+GET http://127.0.0.1:8000/api/quizzes/1/
+Accept: application/json
+
+### Créer un quiz (exemple POST)
+POST http://127.0.0.1:8000/api/quizzes/
+Content-Type: application/json
+
+{
+  "titre": "Comment réduire la dépendance numérique à l'école ?",
+  "contenu": "Choisissez la bonne réponse pour progresser dans la démarche NIRD",
+  "categorie": 1,
+  "reponses": [
+    { "texte": "Organiser des activités hors écran", "est_correct": true, "ordre": 1 },
+    { "texte": "Augmenter le temps d'écran", "est_correct": false, "ordre": 2 },
+    { "texte": "Ignorer le problème", "est_correct": false, "ordre": 3 }
+  ]
+}
+
+### Mettre à jour un quiz (PUT)
+PUT http://127.0.0.1:8000/api/quizzes/1/
+Content-Type: application/json
+
+{
+  "titre": "Mise à jour du quiz NIRD",
+  "contenu": "Nouvelle description",
+  "categorie": 1
+}
+
+### Supprimer un quiz
+DELETE http://127.0.0.1:8000/api/quizzes/1/
+
+
+### Supprimer un quiz
+GET http://127.0.0.1:8000/api/categories-count/

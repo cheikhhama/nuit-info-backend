@@ -178,15 +178,20 @@ class VerifierReponseAPIView(APIView):
 
 
 
+
 class LeaderboardAPIView(APIView):
-    permission_classes = [permissions.AllowAny]  # ou IsAuthenticated si tu veux protéger
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
-        # Récupérer tous les profils triés par score décroissant
         profils = Profile.objects.all().order_by('-score')
-        serializer = LeaderboardSerializer(profils, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
+        paginator = LimitOffsetPagination()
+        paginator.default_limit = 6   # nombre de résultats par page
+        paginator.max_limit = 6      # limite max si le client modifie "limit"
+        result_page = paginator.paginate_queryset(profils, request)
+
+        serializer = LeaderboardSerializer(result_page, many=True)
+
+        return paginator.get_paginated_response(serializer.data)
 
 class InformationListAPIView(APIView):
     permission_classes = [permissions.AllowAny]

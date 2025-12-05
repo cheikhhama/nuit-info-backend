@@ -123,6 +123,7 @@ from .models import Categorie
 from .serializers import CategorieWithQuizCountSerializer,LeaderboardSerializer
 
 class CategorieWithQuizCountListAPIView(generics.ListAPIView):
+    permission_classes = [AllowAny]
     serializer_class = CategorieWithQuizCountSerializer
 
     def get_queryset(self):

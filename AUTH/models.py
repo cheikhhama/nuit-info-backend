@@ -109,3 +109,16 @@ class Reponse(models.Model):
 
     def __str__(self):
         return f"{self.texte} ({'✓' if self.est_correct else '✗'})"
+
+
+class HistoriqueReponse(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    reponse = models.ForeignKey(Reponse, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'quiz')  # ⛔ une seule réponse par quiz
+
+    def __str__(self):
+        return f"{self.user.user.username} → Quiz {self.quiz.id}"

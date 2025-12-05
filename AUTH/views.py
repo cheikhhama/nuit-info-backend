@@ -220,3 +220,51 @@ class InformationDetailAPIView(APIView):
 
         serializer = InformationSerializer(info)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+from .models import HistoriqueReponse
+
+class VerifierReponseAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        serializer = ReponseCheckSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        reponse_id = serializer.validated_data["reponse_id"]
+        try:
+            reponse = Reponse.objects.select_related("quiz").get(id=reponse_id)
+        except Reponse.DoesNotExist:
+            return Response({"error": "Réponse non trouvée"}, status=404)
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        quiz = reponse.quiz
+        # ⛔ Vérifier si déjà répondu
+        if HistoriqueReponse.objects.filter(user=profile, quiz=quiz).exists():
+            return Response(
+                {"error": "Vous avez déjà répondu à ce quiz."},
+                status=400
+            )
+
+        est_correct = reponse.est_correct
+
+        if est_correct:
+            profile.score += {1: 5, 2: 10, 3: 14}[profile.level]
+        else:
+            profile.score = max(profile.score - {1: 2, 2: 4, 3: 6}[profile.level], 0)
+
+        # Level
+        profile.level = 3 if profile.score >= 400 else 2 if profile.score >= 100 else 1
+        profile.save()
+
+        HistoriqueReponse.objects.create(
+            user=profile,
+            quiz=quiz,
+            reponse=reponse
+        )
+        return Response({
+            "quiz_id": quiz.id,
+            "reponse_id": reponse.id,
+            "est_correct": est_correct,
+            "score": profile.score,
+            "level": profile.level
+        }, status=200)

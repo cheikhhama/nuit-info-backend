@@ -1,5 +1,5 @@
 ### Récupérer tous les quizzes
-http://127.0.0.1:8000/api/quizzes/?categorie=3
+http://127.0.0.1:8000/api/quizzes/
 Accept: application/json
 ### Récupérer tous les quizzes
 http://127.0.0.1:8000/api/leaderboard/
@@ -73,12 +73,12 @@ Content-Type: application/json
 ### 
 
 # 2️⃣ Vérifier une réponse de quiz (authentifié)
-POST http://127.0.0.1:8000/api/verifierreponse/
+POST http://api.tm-code.online/api/verifierreponse/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY0OTA1NDM5LCJpYXQiOjE3NjQ5MDM2MzksImp0aSI6IjU0MTM2MzdkODk0ZTQxMWY4YjM0MmU5MDRjMDdkMjc3IiwidXNlcl9pZCI6IjkifQ.jZfF-VLfKEDH8s5piSGDqcPKdXja5ubOrvlaC73DhQs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY0OTEyMDQ1LCJpYXQiOjE3NjQ5MTAyNDUsImp0aSI6IjBiMTllMmQwMWMxYjQ2MzBiOGU4NTgzZmIxNjFlNWIyIiwidXNlcl9pZCI6IjkifQ.5PQkJzxMkkpLfv-R-j20cjIp7y1pn0hicT5TjP4vdDE
 
 {
-  "reponse_id": 10
+  "reponse_id": 133
 }
 
 ###

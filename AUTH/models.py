@@ -10,14 +10,27 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-    def ajouter_score(self):
-        """Ajoute des points selon le niveau"""
-        if self.level == 1:
-            self.score += 5
-        elif self.level == 2:
-            self.score += 10
-        elif self.level == 3:
-            self.score += 14
+    def ajouter_score(self, points=None):
+ 
+        if points is not None:
+            self.score += points
+        else:
+            # points par défaut selon le niveau
+            if self.level == 1:
+                self.score += 5
+            elif self.level == 2:
+                self.score += 10
+            elif self.level == 3:
+                self.score += 14
+
+        # Mise à jour du niveau selon le score
+        if self.score >= 400:
+            self.level = 3
+        elif self.score >= 100:
+            self.level = 2
+        else:
+            self.level = 1
+
         self.save()
 
 

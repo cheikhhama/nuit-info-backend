@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterView, ProtectedView, LoginView, LogoutView,QuizListAPIView,QuizDetailAPIView,CategorieWithQuizCountListAPIView,VerifierReponseAPIView
+from .views import RegisterView, ProtectedView, LoginView, LogoutView,QuizListAPIView,QuizDetailAPIView,CategorieWithQuizCountListAPIView,VerifierReponseAPIView,LeaderboardAPIView,InformationListAPIView,InformationDetailAPIView
 
 urlpatterns = [
     path("register/", RegisterView.as_view()),
@@ -10,5 +10,7 @@ urlpatterns = [
     path('quizzes/<int:pk>/', QuizDetailAPIView.as_view(), name='quiz-detail'),
     path('categories-count/', CategorieWithQuizCountListAPIView.as_view(), name='categories-count'),
     path('verifierreponse/', VerifierReponseAPIView.as_view(), name='verifierreponse'),
-
+    path('leaderboard/', LeaderboardAPIView.as_view(), name='leaderboard'),
+    path('informations/', InformationListAPIView.as_view(), name='information-list'),
+    path('informations/<int:pk>/', InformationDetailAPIView.as_view(), name='information-detail'),
 ]

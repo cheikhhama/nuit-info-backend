@@ -117,7 +117,7 @@ class QuizSerializer(serializers.ModelSerializer):
 
 
 from rest_framework import serializers
-from .models import Categorie
+from .models import Categorie,Profile
 
 class CategorieWithQuizCountSerializer(serializers.ModelSerializer):
     quiz_count = serializers.IntegerField(read_only=True)
@@ -129,3 +129,22 @@ class CategorieWithQuizCountSerializer(serializers.ModelSerializer):
 
 class ReponseCheckSerializer(serializers.Serializer):
     reponse_id = serializers.IntegerField()
+
+
+
+class LeaderboardSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+
+    class Meta:
+        model = Profile
+        fields = ['username', 'score', 'level']
+
+from rest_framework import serializers
+from .models import Information
+
+class InformationSerializer(serializers.ModelSerializer):
+    categorie = serializers.CharField(source='categorie.nom')  # afficher le nom de la catégorie
+
+    class Meta:
+        model = Information
+        fields = ['id', 'titre', 'contenu', 'solution', 'categorie']

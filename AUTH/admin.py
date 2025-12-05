@@ -44,8 +44,8 @@ class ReponseInline(admin.TabularInline):
 # --- Quiz ---
 @admin.register(Quiz)
 class QuizAdmin(admin.ModelAdmin):
-    list_display = ('titre', 'categorie', 'created_at', 'updated_at')
-    search_fields = ('titre', 'contenu')  # nom supprimé (n’existe pas dans ton modèle)
-    list_filter = ('categorie', 'created_at')
-    readonly_fields = ('created_at', 'updated_at')
-    inlines = [ReponseInline]
+    list_display = ('titre', 'categorie', 'created_at', 'updated_at', 'nombre_reponses')
+    
+    def nombre_reponses(self, obj):
+        return obj.reponses.count()
+    nombre_reponses.short_description = "Nombre de réponses"

@@ -3,13 +3,12 @@ import django
 import random
 
 # --- Initialiser Django ---
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')  # remplace 'project'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')  # à adapter selon ton projet
 django.setup()
 
-from AUTH.models import Categorie, Quiz, Reponse, Information, Profile
-from django.contrib.auth.models import User
+from AUTH.models import Categorie, Information
 
-# --- Données thématiques NIRD ---
+# --- Catégories NIRD ---
 categories_nird = [
     "Éducation Numérique",
     "Bien-être Numérique",
@@ -18,32 +17,31 @@ categories_nird = [
     "Engagement citoyen"
 ]
 
-questions_templates = [
-    {
-        "question": "Quelle pratique aide les élèves à réduire leur dépendance aux écrans ?",
-        "options": ["Fixer des horaires d'utilisation", "Augmenter le temps d'écran", "Ignorer le problème"],
-        "answer": "Fixer des horaires d'utilisation"
-    },
-    {
-        "question": "Quel rôle peut jouer un enseignant dans la démarche NIRD ?",
-        "options": ["Sensibiliser et guider", "Encourager l'usage illimité", "Ne rien changer"],
-        "answer": "Sensibiliser et guider"
-    },
-    {
-        "question": "Quelle action aide un établissement à réduire la dépendance numérique ?",
-        "options": ["Organiser des activités hors écran", "Supprimer toutes les technologies", "Ignorer les habitudes numériques"],
-        "answer": "Organiser des activités hors écran"
-    },
-    {
-        "question": "Comment impliquer les familles dans la démarche NIRD ?",
-        "options": ["Communiquer et sensibiliser", "Interdire totalement les écrans à la maison", "Ne pas informer les parents"],
-        "answer": "Communiquer et sensibiliser"
-    },
-    {
-        "question": "Quel outil peut aider à mesurer la dépendance numérique ?",
-        "options": ["Questionnaires et suivi des usages", "Suppression totale des appareils", "Ignorer les données"],
-        "answer": "Questionnaires et suivi des usages"
-    }
+# --- Exemples de contenus et solutions ---
+contenus_textes = [
+    "Ce conseil aide à réduire la dépendance numérique en classe.",
+    "Encouragez les activités hors écran pour équilibrer le temps d'écran.",
+    "Sensibilisez les élèves aux risques liés à l'utilisation excessive des écrans.",
+    "Impliquez les familles dans la gestion du temps d'écran à la maison.",
+    "Utilisez des questionnaires pour mesurer la dépendance numérique.",
+    "Organisez des ateliers sur le bien-être numérique.",
+    "Favorisez l'utilisation responsable des outils numériques.",
+    "Proposez des temps d'activités créatives sans technologie.",
+    "Informez les enseignants des bonnes pratiques NIRD.",
+    "Créez des espaces dédiés aux pauses numériques."
+]
+
+solutions_textes = [
+    "Planifier des temps sans écran chaque jour.",
+    "Mettre en place un suivi des usages numériques.",
+    "Organiser des activités collaboratives hors écran.",
+    "Sensibiliser les parents aux bonnes pratiques numériques.",
+    "Créer des ateliers ludiques pour les élèves sur le bien-être numérique.",
+    "Utiliser des outils de mesure et feedback pour les élèves.",
+    "Limiter l'accès aux applications distrayantes pendant les cours.",
+    "Encourager la participation à des activités sportives et artistiques.",
+    "Mettre en place des règles claires sur l'utilisation des écrans.",
+    "Valoriser les moments de déconnexion pour toute la communauté éducative."
 ]
 
 # --- Fonctions utilitaires ---
@@ -54,52 +52,22 @@ def create_categories():
         categories.append(cat)
     return categories
 
-def create_users(n=5):
-    users = []
+def create_informations(categories, n=100):
     for i in range(1, n+1):
-        user, created = User.objects.get_or_create(username=f"user{i}")
-        Profile.objects.get_or_create(user=user)
-        users.append(user)
-    return users
+        category = random.choice(categories)
+        contenu = random.choice(contenus_textes)
+        solution = random.choice(solutions_textes)
+        titre = f"Information NIRD {i} - {category.nom}"
 
-def create_quiz(category, template, index):
-    quiz = Quiz.objects.create(
-        titre=f"Quiz NIRD {index}: {template['question']}",
-        contenu="Choisissez la bonne réponse pour progresser dans la démarche NIRD",
-        categorie=category
-    )
-
-    # Mélanger les options
-    options = template['options'].copy()
-    random.shuffle(options)
-
-    for ordre, texte in enumerate(options, 1):
-        Reponse.objects.create(
-            quiz=quiz,
-            texte=texte,
-            est_correct=(texte == template['answer']),
-            ordre=ordre
+        Information.objects.create(
+            titre=titre,
+            contenu=contenu,
+            solution=solution,
+            categorie=category
         )
-    return quiz
-
-def create_information(category, index):
-    titre = f"Information NIRD {index} - {category.nom}"
-    contenu = f"Ceci est un conseil pratique pour réduire la dépendance numérique dans {category.nom}."
-    info = Information.objects.create(titre=titre, contenu=contenu, categorie=category)
-    return info
 
 # --- SCRIPT PRINCIPAL ---
-def populate_nird(n_quizzes=100):
-    categories = create_categories()
-    create_users(n=5)
-
-    for i in range(1, n_quizzes + 1):
-        category = random.choice(categories)
-        template = random.choice(questions_templates)
-        create_quiz(category, template, i)
-        create_information(category, i)
-
-    print(f"✅ Base de données remplie avec {n_quizzes} quizzes et informations NIRD.")
-
 if __name__ == "__main__":
-    populate_nird()
+    categories = create_categories()
+    create_informations(categories, n=100)
+    print("✅ 100 informations NIRD avec solutions insérées avec succès !")

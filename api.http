@@ -75,10 +75,10 @@ Content-Type: application/json
 # 2️⃣ Vérifier une réponse de quiz (authentifié)
 POST http://127.0.0.1:8000/api/verifierreponse/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY0ODk2NzAwLCJpYXQiOjE3NjQ4OTQ5MDAsImp0aSI6IjMwNDIxNWE1NGI5MjRkNjRiMDYzNWM1N2FhNDQzZmE4IiwidXNlcl9pZCI6IjkifQ.z0ffGj2FBixec4lmp1l9aHsx91XpYHfpYgOQlH9h7JI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY0ODk4OTYyLCJpYXQiOjE3NjQ4OTcxNjIsImp0aSI6ImQ2ZDM3MGQ1ZjBmYzRiYmZhMTY2NmM4YjE5YmRkYjAzIiwidXNlcl9pZCI6IjkifQ.RuVouYvGGPsHiANYXxdRbxcTWRfbcKx3XQ_z3utgooE
 
 {
-  "reponse_id": 1
+  "reponse_id": 2
 }
 
 ###

@@ -99,7 +99,7 @@ class QuizListAPIView(APIView):
         if categorie_id:
             quizzes = quizzes.filter(categorie__id=categorie_id)
         paginator = LimitOffsetPagination()
-        paginator.default_limit = 2  # nombre d'éléments par page
+        paginator.default_limit = 6  # nombre d'éléments par page
         paginator.max_limit = 6     # limite maximale
         result_page = paginator.paginate_queryset(quizzes, request)
         serializer = QuizSerializer(result_page, many=True)
